@@ -6,6 +6,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image/stb_image_write.h"
 
+
 int main() {
     int width, height, channels;
     unsigned char *img = stbi_load("Red.jpg", &width, &height, &channels,0);
@@ -23,10 +24,9 @@ int main() {
     if (grey_img == NULL){
         printf("Error allocating space to greyscale image!");
     }
-    
     unsigned int combined_color = (img[0] << 16) | (img[1] << 8) | img[2];
     printf("First pixel RGB: #%06X\n", combined_color);
-
+    
     for (unsigned char *p = img, *pg =grey_img; p != img +img_size; p += channels, pg += grey_channels ){
 
         *pg = (uint8_t)((*p + *(p+1) +*(p+2))/3.0);
