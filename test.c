@@ -11,11 +11,18 @@ int width, height, channels;
 unsigned char *img;
 unsigned char *manip_img;
 
-void printCharInBinary(unsigned char c) {
-    for (int i = 7; i >= 0; i--) {
-        // bitwise and with each bit
-        printf("%d",(c & (1 << i)) ? 1 : 0);
+char *getCharInBinary(unsigned char c) {
+    char *binary = malloc(9); // 8 bits + null terminator
+    if (binary == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
     }
+
+    for (int i = 7; i >= 0; i--) {
+        binary[7 - i] = (c & (1 << i)) ? '1' : '0';
+    }
+    binary[8] = '\0'; // Null terminator
+    return binary;
 }
 
 void read_image(){
@@ -42,13 +49,13 @@ int main(){
     //     printf(" "); 
     // }
     printf("\n");
-    for (unsigned char *p = img, *pg =manip_img; p != img + img_size; p += 1, pg +=1){
+    for (unsigned char *p = img, *pg =manip_img; p != img + img_size; p++, pg++){
 
         *pg = (*p & 0xF0 );
         
     }
     for (int i = 0; i < 10; i++) {
-    printf("Original: %d, Modified: %d\n",img[i],  manip_img[i]);
+    printf("Original: %s, Modified: %s\n",getCharInBinary(img[i]),  getCharInBinary(manip_img[i]));
     }
     stbi_write_jpg("sunflower_manip.png", width, height, channels, manip_img, 100);
     stbi_image_free(img);
