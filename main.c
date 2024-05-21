@@ -9,7 +9,7 @@
 
 int main() {
     int width, height, channels;
-    unsigned char *img = stbi_load("Red.jpg", &width, &height, &channels,0);
+    unsigned char *img = stbi_load("sunflower.jpg", &width, &height, &channels,0);
     if (img == NULL){
         printf("Error in loading the image \n");
         exit(1);

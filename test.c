@@ -16,6 +16,7 @@ int main(){
     // Read input until a newline is encountered or buffer is full
     scanf("%255[^\n]", input);
     printf("Binary representation of the string:\n");
+    // size_t is unsigned integer type
     for (size_t i = 0; i < strlen(input); i++) {
         printCharInBinary(input[i]);
         printf(" "); 
