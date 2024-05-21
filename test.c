@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image/stb_image.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image/stb_image_write.h"
+
+int width, height, channels;
+unsigned char *img;
 
 void printCharInBinary(unsigned char c) {
     for (int i = 7; i >= 0; i--) {
@@ -10,7 +17,23 @@ void printCharInBinary(unsigned char c) {
     }
 }
 
+void read_image(){
+    img = stbi_load("sunflower.jpg", &width, &height, &channels,0);
+    if (img == NULL){
+        printf("Error in loading the image \n");
+        exit(1);
+    }
+    printf("[IMAGE LOAD SUCCESS] \nWidth: %dpx, Height: %dpx and channels: %d \n", width, height, channels);
+}
+
 int main(){
+    int width, height, channels;
+    unsigned char *img = stbi_load("sunflower.jpg", &width, &height, &channels,0);
+    if (img == NULL){
+        printf("Error in loading the image \n");
+        exit(1);
+    }
+    printf("[IMAGE LOAD SUCCESS] \nWidth: %dpx, Height: %dpx and channels: %d \n", width, height, channels);
     char input[100];
     printf("Enter a string: ");
     // Read input until a newline is encountered or buffer is full
