@@ -34,11 +34,14 @@ void read_image(){
     printf("[IMAGE LOAD SUCCESS] \nWidth: %dpx, Height: %dpx and Channels: %d \n", width, height, channels);
 }
 
+
+
 int main(){
     read_image();
     size_t img_size = width * height *channels;
     manip_img = malloc(img_size);
-    char input[100];
+    char input[] = "hello";
+    char *bin_in = malloc(strlen(input)*8 +1);
     // printf("Enter a string: ");
     // // Read input until a newline is encountered or buffer is full
     // scanf("%255[^\n]", input);
@@ -48,10 +51,31 @@ int main(){
     //     printCharInBinary(input[i]);
     //     printf(" "); 
     // }
-    printf("\n");
+    bin_in[0] = '\0';
+    for (size_t i = 0; i < strlen(input); i++) {
+        char *binary = getCharInBinary(input[i]);
+        strcat(bin_in, binary);
+        free(binary); // Free the allocated memory for each binary string
+    }
+    
+    printf("Binary representation of the input string: %s\n", bin_in);
+    
+    int i = 0;
     for (unsigned char *p = img, *pg =manip_img; p != img + img_size; p++, pg++){
-
-        *pg = (*p & 0xF0 );
+        
+        if ( i< strlen(bin_in)){
+            if (bin_in[i] == '1'){
+                *pg = (*p | 0x01 );
+            }
+            if (bin_in[i] == '0'){
+                *pg = (*p & 0xFE );
+            }
+            i++;
+        }
+        else{
+            *pg = *p ;
+        }
+        
         
     }
     for (int i = 0; i < 10; i++) {

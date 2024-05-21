@@ -11,11 +11,18 @@ int width, height, channels;
 unsigned char *img;
 unsigned char *manip_img;
 
-void printCharInBinary(unsigned char c) {
-    for (int i = 7; i >= 0; i--) {
-        // bitwise and with each bit
-        printf("%d",(c & (1 << i)) ? 1 : 0);
+char *getCharInBinary(unsigned char c) {
+    char *binary = malloc(9); // 8 bits + null terminator
+    if (binary == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
     }
+
+    for (int i = 7; i >= 0; i--) {
+        binary[7 - i] = (c & (1 << i)) ? '1' : '0';
+    }
+    binary[8] = '\0'; // Null terminator
+    return binary;
 }
 
 void read_image(){
@@ -24,28 +31,55 @@ void read_image(){
         printf("Error in loading the image \n");
         exit(1);
     }
-    printf("[IMAGE LOAD SUCCESS] \nWidth: %dpx, Height: %dpx and channels: %d \n", width, height, channels);
+    printf("[IMAGE LOAD SUCCESS] \nWidth: %dpx, Height: %dpx and Channels: %d \n", width, height, channels);
 }
+
+
 
 int main(){
     read_image();
     size_t img_size = width * height *channels;
     manip_img = malloc(img_size);
-    char input[100];
-    printf("Enter a string: ");
-    // Read input until a newline is encountered or buffer is full
-    scanf("%255[^\n]", input);
-    printf("Binary representation of the string:\n");
-    // size_t is unsigned integer type
+    char input[] = "hello";
+    char *bin_in = malloc(strlen(input)*8 +1);
+    // printf("Enter a string: ");
+    // // Read input until a newline is encountered or buffer is full
+    // scanf("%255[^\n]", input);
+    // printf("Binary representation of the string:\n");
+    // // size_t is unsigned integer type
+    // for (size_t i = 0; i < strlen(input); i++) {
+    //     printCharInBinary(input[i]);
+    //     printf(" "); 
+    // }
+    bin_in[0] = '\0';
     for (size_t i = 0; i < strlen(input); i++) {
-        printCharInBinary(input[i]);
-        printf(" "); 
+        char *binary = getCharInBinary(input[i]);
+        strcat(bin_in, binary);
+        free(binary); // Free the allocated memory for each binary string
     }
-    printf("\n");
-    for (unsigned char *p = img, *pg =manip_img; p != img + img_size; p += 1, pg +=1){
-
-        *pg = (uint8_t)(*p | (0x7F) );
+    
+    printf("Binary representation of the input string: %s\n", bin_in);
+    
+    int i = 0;
+    for (unsigned char *p = img, *pg =manip_img; p != img + img_size; p++, pg++){
         
+        if ( i< strlen(bin_in)){
+            if (bin_in[i] == '1'){
+                *pg = (*p | 0x01 );
+            }
+            if (bin_in[i] == '0'){
+                *pg = (*p & 0xFE );
+            }
+            i++;
+        }
+        else{
+            *pg = *p ;
+        }
+        
+        
+    }
+    for (int i = 0; i < 10; i++) {
+    printf("Original: %s, Modified: %s\n",getCharInBinary(img[i]),  getCharInBinary(manip_img[i]));
     }
     stbi_write_jpg("sunflower_manip.png", width, height, channels, manip_img, 100);
     stbi_image_free(img);
