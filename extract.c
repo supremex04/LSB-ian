@@ -19,21 +19,35 @@ void read_image(){
     printf("[IMAGE LOAD SUCCESS] \nWidth: %dpx, Height: %dpx and Channels: %d \n", width, height, channels);
 }
 
+void binaryToASCII(const char *binaryString) {
+    size_t length = strlen(binaryString);
+    char asciiString[length / 8 + 1]; // +1 for null terminator
+    asciiString[length / 8] = '\0';
+
+    for (size_t i = 0; i < length; i += 8) {
+        char byte[9] = {0}; // 8 bits + null terminator
+        strncpy(byte, binaryString + i, 8);
+        asciiString[i / 8] = (char)strtol(byte, NULL, 2);
+    }
+
+    printf("ASCII representation: %s\n", asciiString);
+}
 
 int main(){
     read_image();
-    char *bin_in = malloc(200 * sizeof(char));
+    int img_size = width * height * channels;
+    int message_length = 5; // Length of the hidden message in characters
+    char *bin_in = malloc((message_length * 8 + 1) * sizeof(char)); // 8 bits per character + null terminator
     bin_in[0] = '\0';
 
     int i = 0;
-    for (unsigned char *p = img; p != img + 300; p++){
-        if (i < 200) {
-            bin_in[i] = (*p & 0x01) ? '1' : '0';
-            i++;
-        }
+    for (unsigned char *p = img; p != img + img_size && i < message_length * 8; p++) {
+        bin_in[i] = (*p & 0x01) ? '1' : '0';
+        i++;
     }
     bin_in[i] = '\0';
-    printf("Binary representation: %s\n", bin_in);
+    binaryToASCII(bin_in);
+    // printf("Binary representation of the input string: %s\n", bin_in);
     stbi_image_free(img);
     free(bin_in);
 

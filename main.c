@@ -40,7 +40,7 @@ int main(){
     read_image();
     size_t img_size = width * height *channels;
     manip_img = malloc(img_size);
-    char input[] = "This is a hidden message!";
+    char input[] = "Hello";
     char *bin_in = malloc(strlen(input)*8 +1);
 
     bin_in[0] = '\0';
@@ -70,10 +70,10 @@ int main(){
         
         
     }
-    for (int i = 0; i < (strlen(input)*8); i++) {
-        printf("Original: %s, Modified: %s\n",getCharInBinary(img[i]),  getCharInBinary(manip_img[i]));
-    }
-    stbi_write_jpg("hidden_message.png", width, height, channels, manip_img, 100);
+    // for (int i = 0; i < (strlen(input)*8); i++) {
+    //     printf("Original: %s, Modified: %s\n",getCharInBinary(img[i]),  getCharInBinary(manip_img[i]));
+    // }
+    stbi_write_png("hidden_message.png", width, height, channels, manip_img, width * channels);
     stbi_image_free(img);
     free(manip_img);
     
