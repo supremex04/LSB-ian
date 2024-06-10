@@ -11,7 +11,7 @@ This image is capable of storing 376,650 characters.
 
 Practically we could use more than just the LSB to store the data, and increase the storage capacity as the difference in images is not visible to normal eye for few more bits manipulation.
 
-hidden_message.png has this text:
+```hidden_message.png``` has this text:
 
 ```
 Two roads diverged in a yellow wood,
