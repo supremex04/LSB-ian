@@ -1,6 +1,6 @@
 This program hides the message in an image by LSB manipulation.
 
-The image used here has dimension of: 1200x837 px, 3 color channels
+The image used here ```(sunflower.jpg)``` has dimension of: 1200x837 px, 3 color channels
 
 This image is capable of storing 376,650 characters.
 
