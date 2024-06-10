@@ -40,17 +40,9 @@ int main(){
     read_image();
     size_t img_size = width * height *channels;
     manip_img = malloc(img_size);
-    char input[] = "hello";
+    char input[] = "This is a hidden message!";
     char *bin_in = malloc(strlen(input)*8 +1);
-    // printf("Enter a string: ");
-    // // Read input until a newline is encountered or buffer is full
-    // scanf("%255[^\n]", input);
-    // printf("Binary representation of the string:\n");
-    // // size_t is unsigned integer type
-    // for (size_t i = 0; i < strlen(input); i++) {
-    //     printCharInBinary(input[i]);
-    //     printf(" "); 
-    // }
+
     bin_in[0] = '\0';
     for (size_t i = 0; i < strlen(input); i++) {
         char *binary = getCharInBinary(input[i]);
@@ -78,10 +70,10 @@ int main(){
         
         
     }
-    for (int i = 0; i < 10; i++) {
-    printf("Original: %s, Modified: %s\n",getCharInBinary(img[i]),  getCharInBinary(manip_img[i]));
+    for (int i = 0; i < (strlen(input)*8); i++) {
+        printf("Original: %s, Modified: %s\n",getCharInBinary(img[i]),  getCharInBinary(manip_img[i]));
     }
-    stbi_write_jpg("sunflower_manip.png", width, height, channels, manip_img, 100);
+    stbi_write_jpg("hidden_message.png", width, height, channels, manip_img, 100);
     stbi_image_free(img);
     free(manip_img);
     
