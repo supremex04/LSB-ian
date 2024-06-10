@@ -30,13 +30,13 @@ void binaryToASCII(const char *binaryString) {
         asciiString[i / 8] = (char)strtol(byte, NULL, 2);
     }
 
-    printf("ASCII representation: %s\n", asciiString);
+    printf("ASCII representation: \n%s\n", asciiString);
 }
 
 int main(){
     read_image();
     int img_size = width * height * channels;
-    int message_length = 5; // Length of the hidden message in characters
+    int message_length = 745; // Length of the hidden message in characters
     char *bin_in = malloc((message_length * 8 + 1) * sizeof(char)); // 8 bits per character + null terminator
     bin_in[0] = '\0';
 
@@ -46,8 +46,8 @@ int main(){
         i++;
     }
     bin_in[i] = '\0';
+    // printf("Binary representation of hidden message: %s\n", bin_in);
     binaryToASCII(bin_in);
-    // printf("Binary representation of the input string: %s\n", bin_in);
     stbi_image_free(img);
     free(bin_in);
 
